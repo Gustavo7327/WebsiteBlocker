@@ -17,6 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_addButton_clicked();
+    void loadSites();
+    void removeItemFromFile(const QString &item);
+    void on_removeButton_clicked();
+    void updateHostsFile(const QString &item, bool remove);
+
 private:
     Ui::MainWindow *ui;
 };
