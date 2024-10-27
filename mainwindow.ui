@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>WebSiteBlocker</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="titleApp">
@@ -82,9 +82,9 @@
    <widget class="QLineEdit" name="siteInput">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>80</x>
       <y>110</y>
-      <width>461</width>
+      <width>640</width>
       <height>28</height>
      </rect>
     </property>
@@ -103,30 +103,17 @@
     <property name="styleSheet">
      <string notr="true">QLineEdit{
 	font-size: 16px;
-	
+	color: white;
+}
+QLineEdit[text=&quot;&quot;]{
+	color:white;
 }</string>
     </property>
     <property name="text">
      <string/>
     </property>
-   </widget>
-   <widget class="QLabel" name="labelInput">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>112</y>
-      <width>146</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{
-	color:white;
-	font-size: 16px;
-}</string>
-    </property>
-    <property name="text">
-     <string>Site para Bloquear:</string>
+    <property name="placeholderText">
+     <string>Digite aqui o site que deseja bloquear</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -156,8 +143,17 @@ font-size:16px;
       <height>192</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QListView::item {
+    border-bottom: 1px solid light-gray;
+	padding: 8px;
+}
+QListView{
+	font-size: 16px;
+}</string>
+    </property>
    </widget>
-   <widget class="QPushButton" name="addButton_2">
+   <widget class="QPushButton" name="removeButton">
     <property name="geometry">
      <rect>
       <x>320</x>
