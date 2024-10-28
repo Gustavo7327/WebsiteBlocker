@@ -33,47 +33,51 @@ void MainWindow::on_addButton_clicked()
     font.setPointSize(12);
     dialog.setFont(font);
 
-    dialog.exec();
-    QString newSite = dialog.textValue().trimmed();
+    if(dialog.exec() == QInputDialog::Accepted){
 
-    if (newSite.isEmpty()) {
-        qDebug() << "O campo de entrada está vazio.";
-        return;
+        QMessageBox msgBox(this);
+        msgBox.setWindowTitle("Informação");
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setFont(font);
+
+        QString newSite = dialog.textValue().trimmed();
+
+        if (newSite.isEmpty()) {
+            qDebug() << "O campo de entrada está vazio.";
+            msgBox.setText("O campo de entrada está vazio!");
+            msgBox.exec();
+            return;
+        }
+
+        QFile file(QCoreApplication::applicationDirPath() + "/sites.txt");
+
+        if (!file.open(QIODevice::Append | QIODevice::Text)) {
+            qDebug() << "Não foi possível abrir o arquivo:" << file.errorString();
+            return;
+        }
+
+        QTextStream out(&file);
+        QString siteAdd = "127.0.0.1 " + newSite;
+        out << siteAdd << "\n";
+        updateHostsFile(siteAdd, false);
+
+        file.close();
+
+        QStringListModel *model = qobject_cast<QStringListModel*>(ui->listView->model());
+
+        if (model) {
+            QStringList sites = model->stringList();
+            sites << newSite;
+            model->setStringList(sites);
+        }
+
+        qDebug() << "Site adicionado com sucesso:" << newSite;
+
+        msgBox.setText("Site " + newSite + " adicionado com sucesso!");
+        msgBox.exec();
     }
 
-    QFile file(QCoreApplication::applicationDirPath() + "/sites.txt");
-
-    if (!file.open(QIODevice::Append | QIODevice::Text)) {
-        qDebug() << "Não foi possível abrir o arquivo:" << file.errorString();
-        return;
-    }
-
-
-    QTextStream out(&file);
-    QString siteAdd = "127.0.0.1 " + newSite + "\n";
-    out << siteAdd;
-    updateHostsFile(siteAdd, false);
-
-    file.close();
-
-    QStringListModel *model = qobject_cast<QStringListModel*>(ui->listView->model());
-
-    if (model) {
-        QStringList sites = model->stringList();
-        sites << newSite;
-        model->setStringList(sites);
-    }
-
-    qDebug() << "Site adicionado com sucesso:" << newSite;
-
-    QMessageBox msgBox(this);
-    msgBox.setWindowTitle("Informação");
-    msgBox.setText("Site " + newSite + " adicionado com sucesso!");
-    msgBox.setIcon(QMessageBox::Information);
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    font.setPointSize(12);
-    msgBox.setFont(font);
-    msgBox.exec();
 }
 
 
@@ -164,9 +168,11 @@ void MainWindow::on_removeButton_clicked()
         QModelIndex index = ui->listView->currentIndex();
 
         if (index.isValid()) {
-            QString itemToRemove = "127.0.0.1 " + model->data(index, Qt::DisplayRole).toString();
+            QString itemToRemove = "127.0.0.1 " + model->data(index, Qt::DisplayRole).toString().trimmed();
+            QString siteSemIP = itemToRemove;
+            siteSemIP.replace("127.0.0.1 ", "");
 
-            msgBox.setText("Tem certeza que deseja remover " + itemToRemove.replace("127.0.0.1 ", "") + "?");
+            msgBox.setText("Tem certeza que deseja remover " + siteSemIP + "?");
             msgBox.setIcon(QMessageBox::Question);
             msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 
