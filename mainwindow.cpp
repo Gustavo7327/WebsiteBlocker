@@ -6,13 +6,14 @@
 #include <QTextStream>
 #include <QListView>
 #include <QStringListModel>
+#include <QInputDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->siteInput, &QLineEdit::textChanged, [=]{ style()->polish(ui->siteInput); });
     loadSites();
 }
 MainWindow::~MainWindow()
@@ -24,7 +25,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addButton_clicked()
 {
-    QString newSite = ui->siteInput->text().trimmed();
+    QInputDialog dialog(this);
+    dialog.setWindowTitle("Adicionar Site Para Bloqueio");
+    dialog.setLabelText("Insira o domínio do site que deseja bloquear");
+
+    QFont font = dialog.font();
+    font.setPointSize(12);
+    dialog.setFont(font);
+
+    dialog.exec();
+    QString newSite = dialog.textValue().trimmed();
 
     if (newSite.isEmpty()) {
         qDebug() << "O campo de entrada está vazio.";
@@ -54,8 +64,16 @@ void MainWindow::on_addButton_clicked()
         model->setStringList(sites);
     }
 
-    ui->siteInput->clear();
     qDebug() << "Site adicionado com sucesso:" << newSite;
+
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Informação");
+    msgBox.setText("Site " + newSite + " adicionado com sucesso!");
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    font.setPointSize(12);
+    msgBox.setFont(font);
+    msgBox.exec();
 }
 
 
@@ -133,6 +151,13 @@ void MainWindow::removeItemFromFile(const QString &item)
 
 void MainWindow::on_removeButton_clicked()
 {
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Informação");
+
+    QFont font = msgBox.font();
+    font.setPointSize(12);
+    msgBox.setFont(font);
+
     QStringListModel *model = qobject_cast<QStringListModel*>(ui->listView->model());
 
     if (model) {
@@ -140,13 +165,32 @@ void MainWindow::on_removeButton_clicked()
 
         if (index.isValid()) {
             QString itemToRemove = "127.0.0.1 " + model->data(index, Qt::DisplayRole).toString();
+
+            msgBox.setText("Tem certeza que deseja remover " + itemToRemove.replace("127.0.0.1 ", "") + "?");
+            msgBox.setIcon(QMessageBox::Question);
+            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+
+            if(msgBox.exec() == QMessageBox::Cancel){
+                return;
+            }
+
             model->removeRow(index.row());
             removeItemFromFile(itemToRemove);
             updateHostsFile(itemToRemove, true);
+
             qDebug() << "Item removido com sucesso.";
+
+            msgBox.setText(itemToRemove.replace("127.0.0.1 ", "") + " removido com sucesso!");
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setStandardButtons(QMessageBox::Ok);
 
         } else {
             qDebug() << "Nenhum item selecionado.";
+
+            msgBox.setText("Selecione um item para removê-lo");
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.exec();
         }
     }
 }
@@ -198,4 +242,10 @@ void MainWindow::updateHostsFile(const QString &item, bool remove)
     file.close();
 }
 
+
+
+void MainWindow::on_quitButton_clicked()
+{
+    QApplication::quit();
+}
 

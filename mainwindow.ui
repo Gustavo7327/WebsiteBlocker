@@ -49,8 +49,8 @@
    <widget class="QPushButton" name="addButton">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>170</y>
+      <x>120</x>
+      <y>510</y>
       <width>160</width>
       <height>30</height>
      </rect>
@@ -73,47 +73,11 @@
     border-style: solid;
     border-radius: 8px;
 	background-color: green;
-}</string>
-    </property>
-    <property name="text">
-     <string>Adicionar Site</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="siteInput">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>110</y>
-      <width>640</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="sizeIncrement">
-     <size>
-      <width>0</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="baseSize">
-     <size>
-      <width>0</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLineEdit{
-	font-size: 16px;
-	color: white;
-}
-QLineEdit[text=&quot;&quot;]{
 	color:white;
 }</string>
     </property>
     <property name="text">
-     <string/>
-    </property>
-    <property name="placeholderText">
-     <string>Digite aqui o site que deseja bloquear</string>
+     <string>Adicionar Site</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -138,9 +102,9 @@ font-size:16px;
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>290</y>
+      <y>123</y>
       <width>640</width>
-      <height>192</height>
+      <height>361</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -154,6 +118,62 @@ QListView{
     </property>
    </widget>
    <widget class="QPushButton" name="removeButton">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>510</y>
+      <width>160</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	font-size:18px;
+    border-style: solid;
+    border-radius: 8px;
+	background-color: green;
+	color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>Remover Site</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>90</y>
+      <width>160</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+	font-size:20px;
+	color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>Sites Bloqueados</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -179,32 +199,12 @@ QListView{
 	font-size:18px;
     border-style: solid;
     border-radius: 8px;
-	background-color: green;
+	background-color: red;
+color:white;
 }</string>
     </property>
     <property name="text">
-     <string>Remover Site</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>260</y>
-      <width>160</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QLabel{
-	font-size:20px;
-}</string>
-    </property>
-    <property name="text">
-     <string>Sites Bloqueados</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <string>Sair</string>
     </property>
    </widget>
   </widget>

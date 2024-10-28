@@ -23,6 +23,7 @@ private slots:
     void removeItemFromFile(const QString &item);
     void on_removeButton_clicked();
     void updateHostsFile(const QString &item, bool remove);
+    void on_quitButton_clicked();
 
 private:
     Ui::MainWindow *ui;
